@@ -8,4 +8,4 @@ export const activatePaneClickHandler = () => {
     ).subscribe(eventTarget => {
         console.log(`Click at pane with ID: ${eventTarget.dataset['paneId']}`);
     });
-}
+};
