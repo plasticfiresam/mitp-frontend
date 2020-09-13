@@ -1,5 +1,15 @@
-import { activatePaneClickHandler } from './src/js/pane-click-handler';
-import { playgroundMovement } from './src/js/playground-movement';
+import { activatePaneHandler } from './src/js/pane-click-handler';
+import { playgroundMovement, toggleNewActivePane } from './src/js/playground-movement';
 
-activatePaneClickHandler();
-playgroundMovement();
+// Идентификатор начальной панели
+const initialId = "100";
+
+// Инициализация
+const init = () => {
+    toggleNewActivePane(initialId);
+
+    activatePaneHandler();
+    playgroundMovement();
+};
+
+init();

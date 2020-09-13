@@ -1,5 +1,6 @@
 import { fromEvent } from "rxjs";
 import { filter } from "rxjs/operators";
+import { getCurrentPane } from "./get-current-pane";
 
 const keysForFilter = [37, 38, 39, 40];
 
@@ -10,72 +11,68 @@ const keyCodes = {
     down: 40,
 };
 
-const getCurrentActivePane = () => {
-    const element = document.getElementsByClassName('--current');
-    if (element[0]) {
-        return element[0];
-    } else {
-        console.log('reset');
-    }
-};
-
-const toggleNewActivePane = (paneId) => {
-    console.log(`next pane id ${paneId}`);
+// Активирует новую панель с указанным идентификатором
+export const toggleNewActivePane = (paneId) => {
+    console.warn(`Next pane ID: ${paneId}`);
     removeOldCurrentPane();
     const panes = [...document.getElementsByClassName('action-pane')];
     const targetIndex = panes.findIndex(element => element.dataset.paneId === paneId);
     panes[targetIndex].classList.add('--current');
 }
 
+// Удаляет класс с текущей активной панели
 const removeOldCurrentPane = () => {
-    const currentPane = getCurrentActivePane();
-    currentPane.classList.remove('--current');
+    const currentPane = getCurrentPane();
+    if (currentPane) {
+        currentPane.classList.remove('--current');
+    }
 }
 
+// Логика обработки нажатий
 export const playgroundMovement = () => {
     fromEvent(document, 'keyup').pipe(
         filter(event => keysForFilter.includes(event.keyCode))
-    ).subscribe(({ target, keyCode }) => {
-        console.log(keyCode);
-        const currentActivePane = getCurrentActivePane();
-        const nextTargets = { ...currentActivePane.dataset };
-        switch (keyCode) {
-            case keyCodes.down: {
-                if (nextTargets['down']) {
-                    toggleNewActivePane(nextTargets['down']);
-                } else {
-                    console.log('no way down');
+    ).subscribe(({ keyCode }) => {
+        const currentPane = getCurrentPane();
+        if (currentPane) {
+            const nextTargets = { ...currentPane.dataset };
+            switch (keyCode) {
+                case keyCodes.down: {
+                    if (nextTargets['down']) {
+                        toggleNewActivePane(nextTargets['down']);
+                    } else {
+                        console.warn('No way down');
+                    }
+                    break;
                 }
-                break;
-            };
-            case keyCodes.right: {
-                if (nextTargets['right']) {
-                    toggleNewActivePane(nextTargets['right']);
-                } else {
-                    console.log('no way right');
+                case keyCodes.right: {
+                    if (nextTargets['right']) {
+                        toggleNewActivePane(nextTargets['right']);
+                    } else {
+                        console.warn('No way right');
+                    }
+                    break;
                 }
-                break;
-            };
-            case keyCodes.up: {
-                if (nextTargets['up']) {
-                    toggleNewActivePane(nextTargets['up']);
-                } else {
-                    console.log('no way top');
+                case keyCodes.up: {
+                    if (nextTargets['up']) {
+                        toggleNewActivePane(nextTargets['up']);
+                    } else {
+                        console.warn('No way top');
+                    }
+                    break;
                 }
-                break;
-            };
-            case keyCodes.left: {
-                if (nextTargets['left']) {
-                    toggleNewActivePane(nextTargets['left']);
-                } else {
-                    console.log('no way left');
+                case keyCodes.left: {
+                    if (nextTargets['left']) {
+                        toggleNewActivePane(nextTargets['left']);
+                    } else {
+                        console.warn('No way left');
+                    }
+                    break;
                 }
-                break;
-            };
-            default: {
-                break;
+                default: {
+                    break;
+                }
             }
         }
-        console.log(nextTargets);
     });
 };
