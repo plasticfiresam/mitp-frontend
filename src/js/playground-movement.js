@@ -20,6 +20,7 @@ const getCurrentActivePane = () => {
 };
 
 const toggleNewActivePane = (paneId) => {
+    console.log(`next pane id ${paneId}`);
     removeOldCurrentPane();
     const panes = [...document.getElementsByClassName('action-pane')];
     const targetIndex = panes.findIndex(element => element.dataset.paneId === paneId);
@@ -35,6 +36,7 @@ export const playgroundMovement = () => {
     fromEvent(document, 'keyup').pipe(
         filter(event => keysForFilter.includes(event.keyCode))
     ).subscribe(({ target, keyCode }) => {
+        console.log(keyCode);
         const currentActivePane = getCurrentActivePane();
         const nextTargets = { ...currentActivePane.dataset };
         switch (keyCode) {
@@ -54,9 +56,9 @@ export const playgroundMovement = () => {
                 }
                 break;
             };
-            case keyCodes.top: {
-                if (nextTargets['top']) {
-                    toggleNewActivePane(nextTargets['top']);
+            case keyCodes.up: {
+                if (nextTargets['up']) {
+                    toggleNewActivePane(nextTargets['up']);
                 } else {
                     console.log('no way top');
                 }
