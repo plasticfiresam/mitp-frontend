@@ -1,6 +1,6 @@
 import { activatePaneHandler } from './src/js/pane-click-handler';
 import { playgroundMovement, toggleNewActivePane } from './src/js/playground-movement';
-
+import { hoverHandler } from './src/js/hover-handler'; 
 // Идентификатор начальной панели
 const initialId = "100";
 
@@ -10,6 +10,7 @@ const init = () => {
 
     activatePaneHandler();
     playgroundMovement();
+    hoverHandler();
 };
 
 init();
